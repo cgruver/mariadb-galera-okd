@@ -15,4 +15,4 @@ This tutorial consists of three parts:
 
 1. [The Containerized MariaDB Image](pages/ContainerBuild.md)
 1. [Deploying To OpenShift](pages/OpenShiftDeploy.md)
-1. [Using and Managing the Database](pages/UsineTheDatabase.md)
+1. [Using and Managing the Database](pages/UsingTheDatabase.md)
