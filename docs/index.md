@@ -10,8 +10,10 @@ Prerequisits:
 
 * Access to an OKD 3.11 cluster with admin rights
 * [Docker Desktop](https://www.docker.com/products/docker-desktop), or docker daemon running on a Linux distribution
+* This GitHub repository: `git clone https://github.com/cgruver/mariadb-galera-okd.git`
+* You need to be comfortable working from a command line.
 
-This tutorial consists of three parts:
+This tutorial consists of three parts which you should follow in order:
 
 1. [The Containerized MariaDB Image](pages/ContainerBuild.md)
 1. [Deploying To OpenShift](pages/OpenShiftDeploy.md)
