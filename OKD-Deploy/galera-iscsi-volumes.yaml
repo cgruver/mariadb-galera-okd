@@ -1,0 +1,83 @@
+---
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: mariadb-sc
+provisioner: no-provisioning 
+reclaimPolicy: Retain
+parameters: 
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data-mariadb-galera-0
+  labels:
+    app: mariadb-galera
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 50Gi
+  iscsi:
+     targetPortal: 10.10.10.10:3260
+     iqn: iqn.your.san:iscsi.galeralun01.389df4
+     lun: 0
+     fsType: xfs
+     readOnly: false
+  storageClassName: mariadb-sc
+  claimRef:
+    name: data-mariadb-galera-0
+    namespace: mariadb-galera
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data-mariadb-galera-1
+  labels:
+    app: mariadb-galera
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 50Gi
+  iscsi:
+     targetPortal: 10.10.10.10:3260
+     iqn: iqn.your.san:iscsi.galeralun02.389df4
+     lun: 0
+     fsType: xfs
+     readOnly: false
+  storageClassName: mariadb-sc
+  claimRef:
+    name: data-mariadb-galera-1
+    namespace: mariadb-galera
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data-mariadb-galera-2
+  labels:
+    app: mariadb-galera
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 50Gi
+  iscsi:
+     targetPortal: 10.10.10.10:3260
+     iqn: iqn.your.san:iscsi.galeralun03.389df4
+     lun: 0
+     fsType: xfs
+     readOnly: false
+  storageClassName: mariadb-sc
+  claimRef:
+    name: data-mariadb-galera-2
+    namespace: mariadb-galera
+
+---
