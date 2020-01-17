@@ -72,6 +72,30 @@ For detailed descriptions, please visit the [Docker Documentation](https://docs.
 
 `ENTRYPOINT` is the command that we want to execute when this container is started.
 
-Now, let's talk a bit more about the `USER` directive.  By default OpenShift will ignore this directive.  It is a security consideration that OpenShift always runs containers as non-root users.  In fact, OpenShift will assign an arbitrary UID to the container when it starts.  For ephemeral images like a Spring Boot application.  This really does not matter.  However, since we are deploying an application that is going to be storing data on a mounted volume, we need the application to be able to access that data after a restart or even a re-deployment of the container image.
+Let's talk a bit more about the `USER` directive.  By default OpenShift will ignore this directive.  It is a security consideration that OpenShift always runs containers as non-root users.  In fact, OpenShift will assign an arbitrary UID to the container when it starts.  For ephemeral images like a Spring Boot application.  This really does not matter.  However, since we are deploying an application that is going to be storing data on a mounted volume, we need the application to be able to access that data after a restart or even a re-deployment of the container image.
 
 To that end, we are going to leverage an OpenShift security context constraint combined with a service account so that our MariaDB database will always run as UID 27.  This will allow us to still access our data across container restarts and re-deployments/upgrades without having to set 777 permissions on the data.
+
+Now, let's build this image and push it to the OpenShift repository.  You need to know the URL of your OpenShift cluster image registry.  It will be something like:
+
+    docker-registry-default.apps.your.cluster.domain.com
+
+Where `apps.your.cluster.domain.com` is the wild-card DNS entry for your OpenShift cluster.
+
+1. Log into your image registry: (Assuming that you are already logged into your OpenShift cluster)
+
+        docker login -p $(oc whoami -t) -u admin docker-registry-default.apps.your.cluster.domain.com
+
+1. Build the image:
+
+        docker build -t docker-registry-default.apps.your.cluster.domain.com/openshift/mariadb-galera:10.4 .
+
+1. Push the image to the OpenShift image registry.
+
+        docker push docker-registry-default.apps.your.cluster.domain.com/openshift/mariadb-galera:10.4
+
+### That's It!  We just built a new container image and pushed it into the image registry.
+
+Now, let's deploy a database cluster:
+
+[OpenShift Deployment](OpenShiftDeploy.md)

@@ -18,9 +18,9 @@ spec:
     spec:
       securityContext:
         runAsUser: 27
-        runAsGroup: 27
         fsGroup: 27
       serviceAccount: mariadb
+      terminationGracePeriodSeconds: 60
       nodeSelector:
         node-role.kubernetes.io/compute: 'true'
       affinity:
@@ -108,17 +108,14 @@ spec:
       - name: config-map
         configMap:
           name: galera-config-cm
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        storageClassName: mariadb-sc
-        resources:
-          requests:
-            storage: 50Gi
-        accessModes: [ "ReadWriteOnce" ]
-        selector:
-          matchLabels:
-            app: mariadb-galera
   updateStrategy:
     type: OnDelete
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      resources:
+        requests:
+          storage: 50Gi
+      accessModes: 
+      - ReadWriteOnce
