@@ -13,7 +13,7 @@ Prerequisits:
 * This GitHub repository: `git clone https://github.com/cgruver/mariadb-galera-okd.git`
 * You need to be comfortable working from a command line.
 
-This tutorial consists of three parts which you should follow in order:
+This tutorial consists of three parts which you should follow in order: (Note: Content is not complete yet. Stay tuned)
 
 1. [The Containerized MariaDB Image](pages/ContainerBuild.md)
 1. [Deploying To OpenShift](pages/OpenShiftDeploy.md)
