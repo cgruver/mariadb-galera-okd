@@ -82,6 +82,14 @@ Now, let's build this image and push it to the OpenShift repository.  You need t
 
 Where `apps.your.cluster.domain.com` is the wild-card DNS entry for your OpenShift cluster.
 
+1. Make sure that your Docker daemon is running.
+
+    On CentOS:
+
+        systemctl start docker
+
+    On a desktop OS, start `Docker Desktop`.
+
 1. Log into your image registry: (Assuming that you are already logged into your OpenShift cluster)
 
         docker login -p $(oc whoami -t) -u admin docker-registry-default.apps.your.cluster.domain.com

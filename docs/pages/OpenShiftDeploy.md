@@ -14,6 +14,7 @@ Before we deploy, you may have to modify `mariadb-statefulset.yaml` to reflect t
 
 1. Using the default storage class (Assuming dynamic provisioning)
 
+          ...
           volumeClaimTemplates:
             - metadata:
                 name: data
@@ -23,9 +24,11 @@ Before we deploy, you may have to modify `mariadb-statefulset.yaml` to reflect t
                     storage: 50Gi
                 accessModes: 
                   - ReadWriteOnce
+          ... 
 
-1. Using a dynamically provisioned storage class.
+1. Using a dynamically provisioned storage class.  In this case, I have set up GlusterFS as both a block provisioner as well as an object store provisioner.  This example will request iSCSI mapped block devices from the `gluster-block` storage provisioner deployed into my OpenShift cluster.
 
+          ...
           volumeClaimTemplates:
             - metadata:
                 name: data
@@ -36,11 +39,13 @@ Before we deploy, you may have to modify `mariadb-statefulset.yaml` to reflect t
                     storage: 50Gi
                 accessModes: 
                   - ReadWriteOnce
+          ...
 
 1. Using pre-configured PersistentVolumes associated with a non-provisioning storage class:
 
-    Use this method in conjunction with the file: `galera-iscsi-volumes` which must be modified to match your storage configuration.  The example provided create a new storage class, `mariadb-sc`, and configures iSCSI attached persistent volumes.
+    Use this method in conjunction with the file: `galera-iscsi-volumes` which must be modified to match your storage configuration.  The example provided create a new storage class, `mariadb-sc`, and configures iSCSI attached persistent volumes.  I use a QNAP NAS-Book [TBS-453DX](https://www.qnap.com/en-us/product/tbs-453dx) to provide iSCSI luns to my home lab.  It requires manual configuration, but teaches you a lot about storage management.
 
+          ...
           volumeClaimTemplates:
             - metadata:
                 name: data
@@ -53,6 +58,7 @@ Before we deploy, you may have to modify `mariadb-statefulset.yaml` to reflect t
                 selector:
                   matchLabels:
                     app: mariadb-galera
+          ...
 
 Now, let's deploy MariaDB: (Assuming that you are logged into your OpenShift cluster)
 
@@ -75,3 +81,9 @@ Now, let's deploy MariaDB: (Assuming that you are logged into your OpenShift clu
         oc apply -f mariadb-galera-headless-svc.yaml -n mariadb-galera
         oc apply -f mariadb-galera-loadbalance-svc.yaml -n mariadb-galera
         oc apply -f mariadb-statefulset.yaml -n mariadb-galera
+
+You should now see your MariaDB cluster deploying.  Each node will start in series after the previous has passed it's readiness probe.  The `podManagementPolicy: "OrderedReady"` directive in the StatefulSet ensures that the cluster will always stop and start in a healthy state.
+
+![Deployed Cluster](../images/Galera-Deployed.png)
+
+### Next, we will [connect to our new cluster](UsingTheDatabase.md)
