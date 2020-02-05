@@ -24,9 +24,13 @@ OK, we have connected to our new MariaDB cluster by directly accessing the termi
 
 So, let's make it a bit more useful, and connect to it with DBeaver.
 
-1. Note that we do not have any means to connect to the MariaDB cluster from outside of OpenShift.  In fact, we can't even connect to it from outside of the `mariadb-galera` namespace.  This is by design.  Unless you REALLY need external applications to connect to this database, do NOT create a `route` that exposes port `3306` outside of the OpenShift cluster.  Instead, we can make this MariaDB cluster available for connection to applications deployed in OpenShift by either making the `mariadb-galera` namespace globally accessible with the OKD cluster, or we can connect specific namespace networks together.
+1. Note that we do not have any means to connect to the MariaDB cluster from outside of OpenShift.  In fact, we can't even connect to it from outside of the `mariadb-galera` namespace.  This is by design.  Unless you REALLY need external applications to connect to this database, do NOT create a `route` that exposes port `3306` outside of the OpenShift cluster.  Instead, we can make this MariaDB cluster available for connection to applications deployed in OpenShift by either making the `mariadb-galera` namespace globally accessible within the OKD cluster, or we can connect specific namespace networks together, like this:
 
         oc adm pod-network join-projects --to=mariadb-galera my-application-namespace
+
+    To make the `mariadb-galera` namespace accessible to all other namespaces:
+
+        oc adm pod-network make-projects-global mariadb-galera
 
 1. However, this still does not enable me to externally manage the MariaDB cluster.  And... as much as I love the command line, I really don't relish the idea of connecting to a pod terminal every time I need to do something.  I sure can't use that method to import data...  Enter the `port-forward` capability of OpenShift.  Using `port-forward` I can temporarily expose a port from a POD to my local workstation as though it were a local port.
 
@@ -55,6 +59,7 @@ The last thing to discuss, is how to properly shutdown and start up your MariaDB
 1. To gracefully start it back up:
 
         oc scale statefulsets mariadb-galera --replicas=3 -n mariadb-galera
+
     __Note: If you originally had 3 PODs running, then you want to restart with 3 PODs.__  If you scale with less than you had previously, your cluster will run, but will not have the same scalability or redundancy.  If you scale up more than you previously had running, do so with intent.  Because you will be adding nodes to your cluster and consuming more storage.  Remember, every node is a complete copy of the database.  There is probably little reason to run more than three replicas.
 
 Have fun with your new MariaDB Galera cluster!
