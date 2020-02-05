@@ -4,7 +4,7 @@ By the end of this tutorial you will have configured and deployed a three-node M
 
 Galera is a multi-master clustering technology that works with MySQL and MariaDB.  We are going to be using Galera 4 and MariaDB 10.4.
 
-Get more specific information here: [Galera Home](https://galeracluster.com), [MariaDB Home](https://mariadb.com)
+Get more specific information here: [Galera Information](https://mariadb.com/kb/en/galera-cluster/), [MariaDB Home](https://mariadb.com)
 
 Prerequisits:
 
