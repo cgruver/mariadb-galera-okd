@@ -94,11 +94,11 @@ spec:
           failureThreshold: 3
         resources:
           requests:
-            memory: 8Gi
-            cpu:    2
+            memory: 1Gi
+            cpu:    1
           limits:
-            memory: 12Gi
-            cpu:    4
+            memory: 2Gi
+            cpu:    2
         volumeMounts:
         - name: data
           mountPath: /var/lib/mysql
@@ -116,6 +116,6 @@ spec:
     spec:
       resources:
         requests:
-          storage: 50Gi
+          storage: 5Gi
       accessModes: 
       - ReadWriteOnce
