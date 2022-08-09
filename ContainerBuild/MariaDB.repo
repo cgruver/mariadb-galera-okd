@@ -1,5 +1,5 @@
 [mariadb]
 name = MariaDB
-baseurl = http://mirror.mariadb.org/yum/10.6/rhel8-amd64/
+baseurl = http://mirror.mariadb.org/yum/10.6/fedora/35/x86_64/
 enabled=1
 gpgcheck=0
